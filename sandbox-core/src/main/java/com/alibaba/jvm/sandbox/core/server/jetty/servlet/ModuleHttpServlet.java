@@ -109,12 +109,10 @@ public class ModuleHttpServlet extends HttpServlet {
         final Object[] parameterObjectArray = generateParameterObjectArray(method, req, resp);
 
         final PrintWriter writer = coreModule.append(new ReleaseResource<PrintWriter>(resp.getWriter()) {
-
             @Override
             public void release() {
                 IOUtils.closeQuietly(get());
             }
-
         });
 
 

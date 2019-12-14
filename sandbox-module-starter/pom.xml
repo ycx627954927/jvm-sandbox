@@ -8,9 +8,14 @@
         <artifactId>sandbox</artifactId>
         <version>1.2.2</version>
     </parent>
+
     <artifactId>sandbox-module-starter</artifactId>
     <name>sandbox-module-starter ${sandbox.version}</name>
     <packaging>pom</packaging>
+
+    <modules>
+        <module>ucar-module-demo</module>
+    </modules>
 
     <build>
         <finalName>${project.name}-${project.version}</finalName>

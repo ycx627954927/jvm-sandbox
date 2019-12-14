@@ -119,12 +119,17 @@ class ModuleJarLoader {
         try {
             moduleJarClassLoader = new ModuleJarClassLoader(moduleJarFile);
 
+            // 这里会是 SandboxClassLoader
             final ClassLoader preTCL = Thread.currentThread().getContextClassLoader();
+
+            // 设置 当前thread上下文 classLoader 为 ModuleJarClassLoader
             Thread.currentThread().setContextClassLoader(moduleJarClassLoader);
 
             try {
+                // 以 ModuleJarClassLoader 名义进行加载 模块下的类
                 hasModuleLoadedSuccessFlag = loadingModules(moduleJarClassLoader, mCb);
             } finally {
+                // 恢复 当前thread上下文 classLoader 为 SandboxClassLoader
                 Thread.currentThread().setContextClassLoader(preTCL);
             }
 

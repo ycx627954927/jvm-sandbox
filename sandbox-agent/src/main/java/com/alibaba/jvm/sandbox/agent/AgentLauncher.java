@@ -216,6 +216,7 @@ public class AgentLauncher {
 
         try {
             final String home = getSandboxHome(featureMap);
+
             // 将Spy注入到BootstrapClassLoader
             inst.appendToBootstrapClassLoaderSearch(new JarFile(new File(
                     getSandboxSpyJarPath(home)
