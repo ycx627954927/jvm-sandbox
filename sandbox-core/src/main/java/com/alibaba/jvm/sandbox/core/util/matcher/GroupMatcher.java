@@ -26,9 +26,11 @@ public abstract class GroupMatcher implements Matcher {
             if (null == matcherArray) {
                 return result;
             }
+
             for (final Matcher subMatcher : matcherArray) {
                 result.getBehaviorStructures().addAll(subMatcher.matching(classStructure).getBehaviorStructures());
             }
+
             return result;
         }
 
@@ -42,12 +44,15 @@ public abstract class GroupMatcher implements Matcher {
 
         @Override
         public MatchingResult matching(ClassStructure classStructure) {
-            boolean isFirst = true;
             final MatchingResult result = new MatchingResult();
+
             final LinkedHashSet<BehaviorStructure> found = new LinkedHashSet<BehaviorStructure>();
             if (null == matcherArray) {
                 return result;
             }
+
+            boolean isFirst = true;
+
             for (final Matcher subMatcher : matcherArray) {
                 final MatchingResult subResult = subMatcher.matching(classStructure);
 
@@ -60,15 +65,16 @@ public abstract class GroupMatcher implements Matcher {
                     found.addAll(subResult.getBehaviorStructures());
                     isFirst = false;
                 } else {
+                    // 取并集
                     found.retainAll(subResult.getBehaviorStructures());
                 }
             }
+
             if (!found.isEmpty()) {
                 result.getBehaviorStructures().addAll(found);
             }
+
             return result;
         }
-
     }
-
 }

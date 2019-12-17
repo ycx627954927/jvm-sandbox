@@ -19,7 +19,7 @@ public class ClassStructureFactory {
     private static final Logger logger = LoggerFactory.getLogger(ClassStructureFactory.class);
 
     /**
-     * 通过Class类来构造类结构
+     * 通过Class类来构造 类结构
      *
      * @param clazz 目标Class类
      * @return JDK实现的类结构

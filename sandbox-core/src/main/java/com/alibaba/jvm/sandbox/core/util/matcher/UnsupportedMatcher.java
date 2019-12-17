@@ -50,6 +50,12 @@ public class UnsupportedMatcher implements Matcher {
         return classStructure.getJavaClassName().startsWith("com.alibaba.jvm.sandbox.");
     }
 
+    /**
+     * 获取到对应的 java类名称(包名.类名)集合
+     *
+     * @param classStructures
+     * @return
+     */
     private Set<String> takeJavaClassNames(final Set<ClassStructure> classStructures) {
         final Set<String> javaClassNames = new LinkedHashSet<String>();
         for (final ClassStructure classStructure : classStructures) {
@@ -107,12 +113,14 @@ public class UnsupportedMatcher implements Matcher {
     @Override
     public MatchingResult matching(final ClassStructure classStructure) {
         final MatchingResult result = new MatchingResult();
+
         if (isUnsupportedClass(classStructure)
                 || isJvmSandboxClass(classStructure)
                 || isFromStealthClassLoader()
                 || isStealthClass(classStructure)) {
             return result;
         }
+
         for (final BehaviorStructure behaviorStructure : classStructure.getBehaviorStructures()) {
             if (isJavaMainBehavior(behaviorStructure)
                     || isUnsupportedBehavior(behaviorStructure)) {
