@@ -130,8 +130,10 @@ public class SandboxClassFileTransformer implements ClassFileTransformer {
             return null;
         }
 
+        // 目标类的 类结构
         final ClassStructure classStructure = getClassStructure(loader, classBeingRedefined, srcByteCodeArray);
         final MatchingResult matchingResult = new UnsupportedMatcher(loader, isEnableUnsafe).and(matcher).matching(classStructure);
+        // 目标类 需要被增强的方法签名
         final Set<String> behaviorSignCodes = matchingResult.getBehaviorSignCodes();
 
         // 如果一个行为都没匹配上也不用继续了
