@@ -37,13 +37,13 @@ public class DebugTraceModule extends ParamSupported implements Module {
         final Printer printer = new ConcurrentLinkedQueuePrinter(writer);
 
         final EventWatcher watcher = new EventWatchBuilder(moduleEventWatcher)
-                .onClass(cnPattern).includeSubClasses()
+                .onClass(cnPattern)
+                .includeSubClasses()
                 .onBehavior(mnPattern)
                 .onWatching()
                 .withCall()
                 .withProgress(new ProgressPrinter(printer))
                 .onWatch(new AdviceListener() {
-
                     private String getTracingTitle(final Advice advice) {
                         return "Tracing for : "
                                 + advice.getBehavior().getDeclaringClass().getName()

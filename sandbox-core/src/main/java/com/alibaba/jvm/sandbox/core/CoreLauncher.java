@@ -55,9 +55,10 @@ public class CoreLauncher {
 
         VirtualMachine vmObj = null;
         try {
-
+            //attach 目标 pid
             vmObj = VirtualMachine.attach(targetJvmPid);
             if (vmObj != null) {
+                //通过vm类 加载sandbox-agent.jar
                 vmObj.loadAgent(agentJarPath, cfg);
             }
 

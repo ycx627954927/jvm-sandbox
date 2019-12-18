@@ -116,6 +116,8 @@ public class DefaultModuleEventWatcher implements ModuleEventWatcher {
                         );
                     }
                 }
+
+                // 转换待转换的类
                 inst.retransformClasses(waitingReTransformClass);
                 logger.info("watch={} in module={} single reTransform {} success, at index={};total={};",
                         watchId, coreModule.getUniqueId(), waitingReTransformClass,
@@ -172,7 +174,11 @@ public class DefaultModuleEventWatcher implements ModuleEventWatcher {
                       final Progress progress,
                       final Event.Type... eventType) {
         final int watchId = watchIdSequencer.next();
-        // 给对应的模块追加ClassFileTransformer
+        /**
+         * 给对应的模块追加ClassFileTransformer
+         * 这是 JDK 提供的一个接口ClassFileTransformer，其主要实现了 transform 方法用于修改类的字节码，
+         * 通过这个方法，可以得到虚拟机载入的类的字节码
+         */
         final SandboxClassFileTransformer sandClassFileTransformer = new SandboxClassFileTransformer(
                 watchId, coreModule.getUniqueId(), matcher, listener, isEnableUnsafe, eventType, namespace);
 
@@ -218,6 +224,10 @@ public class DefaultModuleEventWatcher implements ModuleEventWatcher {
         return watchId;
     }
 
+    /**
+     * 这段代码是在目标模块已经产生织入行为之后，要从jvm去掉我们之前带有增强的代码逻辑的字节码，
+     * 然后再重新渲染一次原始类的字节码
+     */
     @Override
     public void delete(final int watcherId,
                        final Progress progress) {

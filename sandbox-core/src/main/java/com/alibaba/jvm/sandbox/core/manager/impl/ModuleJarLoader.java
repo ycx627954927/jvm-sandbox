@@ -111,6 +111,16 @@ class ModuleJarLoader {
     }
 
 
+    /**
+     * 关键步骤：
+     * 1.创建模块类加载器
+     * 2.将当前线程的 类加载器 从 沙箱类加载器 设置成 模块类加载器
+     * 3.加载模块
+     * 4.将当前线程的 类加载器 从 模块类加载器 设置成 沙箱类加载器
+     *
+     * @param mCb
+     * @throws IOException
+     */
     void load(final ModuleLoadCallback mCb) throws IOException {
 
         boolean hasModuleLoadedSuccessFlag = false;

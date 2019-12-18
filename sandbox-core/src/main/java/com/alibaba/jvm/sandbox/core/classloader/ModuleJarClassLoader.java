@@ -105,6 +105,10 @@ public class ModuleJarClassLoader extends RoutingURLClassLoader {
 
     }
 
+    /**
+     * 如果有模块实现模块文件卸载接口ModuleJarUnLoadSpi的onJarUnLoadCompleted方法，
+     * 则会在这时收到消息通知，方便模块继续清理其他资源，如logback，避免因为资源未释放，导致classLoader关闭失败。
+     */
     private void onJarUnLoadCompleted() {
         try {
             final ServiceLoader<ModuleJarUnLoadSpi> moduleJarUnLoadSpiServiceLoader

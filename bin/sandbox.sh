@@ -209,6 +209,7 @@ reset_for_env()
     [[ ! -z ${JAVA_HOME} ]] \
         && SANDBOX_JAVA_HOME="${JAVA_HOME}"
 
+    # 如果 ${SANDBOX_JAVA_HOME} 为空, 通过TARGET_JVM_PID查找到 JAVA_HOME工作目录, 并设置给 ${SANDBOX_JAVA_HOME}
     # use the target JVM for SANDBOX_JAVA_HOME
     [[ -z ${SANDBOX_JAVA_HOME} ]] \
         && SANDBOX_JAVA_HOME="$(\
@@ -233,6 +234,7 @@ reset_for_env()
     [[ -z ${JAVA_VERSION} ]] \
         && exit_on_err 1 "illegal java version: ${JAVA_VERSION}, please make sure target java process: ${TARGET_JVM_PID} run int JDK[6,11]"
 
+    #若 ${JAVA_HOME}/lib/tools.jar 存在，则通过 -Xbootclasspath/a 这个配置，将它加入 classpath 末尾，为执行 attach_jvm 方法做准备
     [[ -f "${SANDBOX_JAVA_HOME}"/lib/tools.jar ]] \
         && SANDBOX_JVM_OPS="${SANDBOX_JVM_OPS} -Xbootclasspath/a:${SANDBOX_JAVA_HOME}/lib/tools.jar"
 
@@ -246,6 +248,7 @@ function attach_jvm() {
     # got an token
     local token=`date |head|cksum|sed 's/ //g'`
 
+    # 通过java -jar 命令启动 sandbox-core.jar 并传递参数 1. TARGET_JVM_PID 2. sandbox-agent.jar 3. 启动要用到的数据信息
     # attach target jvm
     ATTACH_CMD="${SANDBOX_JAVA_HOME}/bin/java \
         ${SANDBOX_JVM_OPS} \

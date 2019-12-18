@@ -220,14 +220,14 @@ public class AgentLauncher {
             // 将Spy注入到BootstrapClassLoader
             inst.appendToBootstrapClassLoaderSearch(new JarFile(new File(
                     getSandboxSpyJarPath(home)
-                    // SANDBOX_SPY_JAR_PATH
+                    // SANDBOX_SPY_JAR_PATH -> sandbox-spy.jar
             )));
 
-            // 构造自定义的类加载器，尽量减少Sandbox对现有工程的侵蚀
+            // 构造自定义的类加载器，尽量减少Sandbox对现有工程的侵蚀 (实现代码隔离)
             final ClassLoader sandboxClassLoader = loadOrDefineClassLoader(
                     namespace,
                     getSandboxCoreJarPath(home)
-                    // SANDBOX_CORE_JAR_PATH
+                    // SANDBOX_CORE_JAR_PATH -> sandbox-core.jar
             );
 
             // CoreConfigure类定义

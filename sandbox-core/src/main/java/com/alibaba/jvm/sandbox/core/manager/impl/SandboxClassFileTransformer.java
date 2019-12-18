@@ -144,6 +144,7 @@ public class SandboxClassFileTransformer implements ClassFileTransformer {
 
         // 开始进行类匹配
         try {
+            // 类增强
             final byte[] toByteCodeArray = new EventEnhancer().toByteCodeArray(
                     loader,
                     srcByteCodeArray,

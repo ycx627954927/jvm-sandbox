@@ -117,6 +117,8 @@ public class ModuleHttpServlet extends HttpServlet {
 
 
         final boolean isAccessible = method.isAccessible();
+
+        // 使用ModuleJarClassLoader invoke目标模块的方法
         final ClassLoader oriThreadContextClassLoader = Thread.currentThread().getContextClassLoader();
         try {
             method.setAccessible(true);

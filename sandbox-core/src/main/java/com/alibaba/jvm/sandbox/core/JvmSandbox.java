@@ -19,8 +19,10 @@ public class JvmSandbox {
 
     public JvmSandbox(final CoreConfigure cfg,
                       final Instrumentation inst) {
+        // 获取事件处理类实例
         EventListenerHandlers.getSingleton();
         this.cfg = cfg;
+        // 初始化模块管理实例
         this.coreModuleManager = new DefaultCoreModuleManager(
                 cfg,
                 inst,
@@ -28,6 +30,7 @@ public class JvmSandbox {
                 new DefaultProviderManager(cfg)
         );
 
+        // 初始化Spy类
         init();
     }
 

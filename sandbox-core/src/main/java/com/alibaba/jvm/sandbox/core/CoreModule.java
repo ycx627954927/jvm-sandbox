@@ -250,6 +250,10 @@ public class CoreModule {
             if (null != resourceRef) {
                 logger.debug("release resource={} in module={}", resourceRef.get(), uniqueId);
                 try {
+                    /**
+                     * 这个方法是我们在加载模块，通过DefaultCoreModuleManager injectResourceOnLoadIfNecessary方法注入@Resource资源的时候，
+                     * 实现沙箱模块内核封装对象CoreModule内部抽象类ReleaseResource的抽象release方法
+                     */
                     resourceRef.release();
                 } catch (Exception cause) {
                     logger.warn("release resource occur error in module={};", uniqueId, cause);

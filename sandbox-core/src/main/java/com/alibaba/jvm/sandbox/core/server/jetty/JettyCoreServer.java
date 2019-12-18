@@ -180,6 +180,7 @@ public class JettyCoreServer implements CoreServer {
             initializer.initProcess(new Initializer.Processor() {
                 @Override
                 public void process() throws Throwable {
+                    // 初始化logback日志框架
                     LogbackUtils.init(
                             cfg.getNamespace(),
                             cfg.getCfgLibPath() + File.separator + "sandbox-logback.xml"

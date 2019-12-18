@@ -516,6 +516,10 @@ public class DefaultCoreModuleManager implements CoreModuleManager {
     final private class InnerModuleJarLoadCallback implements ModuleJarLoadCallback {
         @Override
         public void onLoad(File moduleJarFile) throws Throwable {
+            /**
+             * 最终会通过模块Jar文件加载链ModuleJarLoadingChain去加载文件
+             * 不过目前来看实现类都是空的，没有起到什么作用。
+             */
             providerManager.loading(moduleJarFile);
         }
     }
@@ -573,6 +577,12 @@ public class DefaultCoreModuleManager implements CoreModuleManager {
         }
     }
 
+    /**
+     * 初始化加载所有的模块
+     *
+     * @return
+     * @throws ModuleException
+     */
     @Override
     public synchronized CoreModuleManager reset() throws ModuleException {
 
@@ -582,10 +592,14 @@ public class DefaultCoreModuleManager implements CoreModuleManager {
         unloadAll();
 
         // 2. 加载所有模块
+        // 这里加载的模块 目前有两种类型：
+        // 1.路径/${user.home}/sandbox/bin/../module 下的系统模块sandbox-mgr-module.jar
+        // 2.路径/${user.home}/.sandbox-module 下的用户自定义模块
         for (final File moduleLibDir : moduleLibDirArray) {
             // 用户模块加载目录，加载用户模块目录下的所有模块
             // 对模块访问权限进行校验
             if (moduleLibDir.exists() && moduleLibDir.canRead()) {
+                // 实例化 模块目录加载器，传入模块lib目录和加载模式attach, 默认加载模式就是attach
                 new ModuleLibLoader(moduleLibDir, cfg.getLaunchMode())
                         .load(
                                 new InnerModuleJarLoadCallback(),

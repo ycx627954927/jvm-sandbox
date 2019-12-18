@@ -692,6 +692,7 @@ public class EventWatchBuilder {
 
     }
 
+    // 创建事件观察条件，过滤类和方法
     private EventWatchCondition toEventWatchCondition() {
         final List<Filter> filters = new ArrayList<Filter>();
         for (final BuildingForClass bfClass : bfClasses) {
@@ -764,7 +765,7 @@ public class EventWatchBuilder {
     private EventWatcher build(final EventListener listener,
                                final Progress progress,
                                final Event.Type... eventTypes) {
-
+        // 调用 moduleEventWatcher.watch 去修改目标类的字节码
         final int watchId = moduleEventWatcher.watch(
                 toEventWatchCondition(),
                 listener,
@@ -781,6 +782,7 @@ public class EventWatchBuilder {
                 return watchId;
             }
 
+            // 流程监控回调类
             @Override
             public IBuildingForUnWatching withProgress(Progress progress) {
                 if (null != progress) {
@@ -789,6 +791,7 @@ public class EventWatchBuilder {
                 return this;
             }
 
+            // 取消监听操作
             @Override
             public void onUnWatched() {
                 moduleEventWatcher.delete(watchId, toProgressGroup(progresses));

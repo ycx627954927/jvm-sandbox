@@ -93,10 +93,19 @@ public class EventEnhancer implements Enhancer {
                                   final String namespace,
                                   final int listenerId,
                                   final Event.Type[] eventTypeArray) {
-        // 返回增强后字节码
+        // 返回增强后字节码(ClassReader读取字节码数据)
         final ClassReader cr = new ClassReader(byteCodeArray);
+
+        // ClassWriter 继承 ClassVisitor 抽象类，负责将对象化的 class 文件内容重构成一个二进制格式的 class 字节码文件
         final ClassWriter cw = createClassWriter(targetClassLoader, cr);
+
+        // 映射Java对象为对象ID(JVM唯一)
         final int targetClassLoaderObjectID = ObjectIDs.instance.identity(targetClassLoader);
+
+        /**
+         * 调用ClassReader的accept方法，接收一个实现了抽象类 ClassVisitor的EventWeaver（方法事件编织者）对象实例作为参数，
+         * EventWeaver对象实现了ClassVisitor 的各个visitxxxx方法
+         */
         cr.accept(
                 new EventWeaver(
                         ASM7, cw, namespace, listenerId,
@@ -107,6 +116,8 @@ public class EventEnhancer implements Enhancer {
                 ),
                 EXPAND_FRAMES
         );
+
+        // 最终得到的cw.toByteArray() 即是我们重新transform之后的字节码
         return dumpClassIfNecessary(cr.getClassName(), cw.toByteArray());
     }
 
